@@ -66,7 +66,7 @@ public class OrdenServiceImplement implements IOrdenService {
 	@Override
 	public List<Orden> findByUsuario(Usuario usuario) {
 		// TODO Auto-generated method stub
-		return ordenRepository.finByUsuario(usuario);
+		return ordenRepository.findByUsuario(usuario);
 	}
 
 	@Override
