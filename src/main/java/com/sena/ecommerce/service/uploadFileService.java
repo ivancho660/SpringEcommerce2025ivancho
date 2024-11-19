@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class uploadFileService {
 	private String folder = "images//";
 
-	// metodo para subir la imagne del producto
+	// metodo para subir la imagen del producto
 	public String saveImages(MultipartFile file, String nombre) throws IOException {
 		// validacion de imagenes
 		if (!file.isEmpty()) {
