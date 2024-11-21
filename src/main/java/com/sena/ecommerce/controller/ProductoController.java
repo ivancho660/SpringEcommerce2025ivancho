@@ -90,7 +90,7 @@ public class ProductoController {
 		if (file.isEmpty()) {
 			producto.setImagen(p.getImagen());
 		} else {
-			if (!p.getImagen().equals("defaul.jpg")) {
+			if (!p.getImagen().equals("default.jpg")) {
 				upload.deletImage(p.getImagen());
 			}
 			String nombreImagen = upload.saveImages(file, p.getNombre());
