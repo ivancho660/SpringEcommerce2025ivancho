@@ -5,9 +5,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class ResourseWebConfiguration implements WebMvcConfigurer {
+public class ResourceWebConfiguration implements WebMvcConfigurer {
 
-	public void addResourseHandlers(ResourceHandlerRegistry registry) {
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/images/**").addResourceLocations("file:images/");
 	}
 }

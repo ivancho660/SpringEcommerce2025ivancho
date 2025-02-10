@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class uploadFileService {
+public class UploadFileService {
 	private String folder = "images//";
 
 	// metodo para subir la imagen del producto

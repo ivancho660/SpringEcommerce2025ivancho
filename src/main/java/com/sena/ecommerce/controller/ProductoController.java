@@ -19,7 +19,7 @@ import com.sena.ecommerce.model.Producto;
 import com.sena.ecommerce.model.Usuario;
 import com.sena.ecommerce.service.IProductoService;
 import com.sena.ecommerce.service.IUsuarioService;
-import com.sena.ecommerce.service.uploadFileService;
+import com.sena.ecommerce.service.UploadFileService;
 
 @Controller
 @RequestMapping("/productos")
@@ -37,7 +37,7 @@ public class ProductoController {
 	// microservicio imgs
 
 	@Autowired
-	private uploadFileService upload;
+	private UploadFileService upload;
 
 	// metodo para redirigir a la vista show en el template de productos
 	@GetMapping("")
