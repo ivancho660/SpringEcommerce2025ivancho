@@ -130,11 +130,14 @@ public class HomeUserController {
 		return "/usuario/carrito";
 	}
 	
+	//limpiar carrito
+	
 	//metodo post de buscardor para buscar los productos homeUsuario
 	@PostMapping("/search")
 	public String searchProducto(@RequestParam String nombre, Model model) {
 		LOGGER.info("nombre del producto: {}",nombre);
-		List<Producto> productos = productoService.findAll().stream().filter(p -> p.getNombre().toUpperCase().contains(nombre.toUpperCase())).collect(Collectors.toList());
+		List<Producto> productos = productoService.findAll().stream()
+				.filter(p -> p.getNombre().toUpperCase().contains(nombre.toUpperCase())).collect(Collectors.toList());
 		model.addAttribute("productos",productos);
 		return "usuario/home";
 	}

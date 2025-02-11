@@ -21,7 +21,7 @@ public class UsuarioServiceImplement implements IUsuarioService {
 		// TODO Auto-generated method stub
 		return usuarioRepository.save(usuario);
 	}
-
+   //metodos implementados
 	@Override
 	public Optional<Usuario> get(Integer id) {
 		// TODO Auto-generated method stub

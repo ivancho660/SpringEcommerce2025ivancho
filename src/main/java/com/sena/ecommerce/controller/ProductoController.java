@@ -1,7 +1,9 @@
 package com.sena.ecommerce.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ import com.sena.ecommerce.model.Usuario;
 import com.sena.ecommerce.service.IProductoService;
 import com.sena.ecommerce.service.IUsuarioService;
 import com.sena.ecommerce.service.UploadFileService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/productos")
@@ -113,4 +117,13 @@ public class ProductoController {
 		productoService.delete(id);
 		return "redirect:/productos";
 	}
+	@PostMapping("administrador/searchA")
+	public String searchProducto(@RequestParam String nombre, Model model) {
+		LOGGER.info("nombre del producto: {}", nombre);
+		List<Producto> productos = productoService.findAll().stream()
+				.filter(p -> p.getNombre().toUpperCase().contains(nombre.toUpperCase())).collect(Collectors.toList());
+		model.addAttribute("productos",productos);
+		return "productos/show";
+	}
+	
 }
