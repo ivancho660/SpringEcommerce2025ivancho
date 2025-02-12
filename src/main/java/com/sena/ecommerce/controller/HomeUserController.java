@@ -1,6 +1,8 @@
 package com.sena.ecommerce.controller;
 
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,7 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sena.ecommerce.model.DetalleOrden;
 import com.sena.ecommerce.model.Orden;
 import com.sena.ecommerce.model.Producto;
+import com.sena.ecommerce.model.Usuario;
+import com.sena.ecommerce.service.IDetalleOrdenService;
+import com.sena.ecommerce.service.IOrdenService;
 import com.sena.ecommerce.service.IProductoService;
+import com.sena.ecommerce.service.IUsuarioService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/") // raiz del proyecto
@@ -31,6 +39,15 @@ public class HomeUserController {
 	// instancia de objeto - servicio
 	@Autowired
 	private IProductoService productoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IOrdenService ordenService;
+	
+	@Autowired
+	private IDetalleOrdenService detalleOrdenService;
 
 	// estos dos son dos variables
 	// lista de detalles de la orden para guardarlos en la db
@@ -39,10 +56,15 @@ public class HomeUserController {
 	// objeto que almacena los datos de la orden
 	Orden orden = new Orden();
 
+	
+
 	// metodo que mapea la vista de usuario en la raiz del proyecto
 	@GetMapping("")
-	public String home(Model model) {
+	public String home(Model model,HttpSession session) {
+		LOGGER.info("sesion usuario: {}",session.getAttribute("idUsuario"));
 		model.addAttribute("productos", productoService.findAll());
+		//VARIABLE DE SESION
+		model.addAttribute("sesion", session.getAttribute("idUsuario"));
 		return "usuario/home";
 	}
 	// metodo que carga el producto de usuario con el id
@@ -130,8 +152,38 @@ public class HomeUserController {
 		return "/usuario/carrito";
 	}
 	
-	//limpiar carrito
-	
+	// metodo para pasar a la vista del resumen de la order
+		@GetMapping("/order")
+		public String order(Model model, HttpSession session) {
+			Usuario u = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
+			model.addAttribute("cart", detalles);
+			model.addAttribute("orden", orden);
+			model.addAttribute("usuario", u);
+			return "usuario/resumenOrden";
+		}
+		@GetMapping("saveOrder")
+		public String saveOrder (HttpSession session) {
+			//guardar orden
+			Date fechaCreacion = new Date();
+			orden.setFechacreacion(fechaCreacion);
+			orden.setNumero(ordenService.GenerarNumeroOrden());
+			//----------------------------------------------
+			//usuario que se referencia en esa compra previamente loggeado
+			Usuario u = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
+			orden.setUsuario(u);
+			ordenService.save(orden);
+			//------------------------------------------------
+			//guardar detalles de la orden 
+			 for (DetalleOrden dt: detalles ) {
+				 dt.setOrden(orden);
+				 detalleOrdenService.save(dt); 
+			 }
+			 //-------------------------------------------------
+			 //limpiar valores que no se añadan a la orden recien guardada 
+			 orden = new Orden();
+			 detalles.clear();
+			return "redirect:/";
+		}
 	//metodo post de buscardor para buscar los productos homeUsuario
 	@PostMapping("/search")
 	public String searchProducto(@RequestParam String nombre, Model model) {

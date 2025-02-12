@@ -31,15 +31,19 @@ public class Orden {
 	public Orden() {
 
 	}
+	
 
-	public Orden(Integer id, String numero, Date fechacreacion, Date fecharecibida, Double total) {
+	public Orden(Integer id, String numero, Date fechacreacion, Date fecharecibida, Double total, Usuario usuario,
+			List<DetalleOrden> detalle) {
 		super();
 		this.id = id;
 		this.numero = numero;
 		this.fechacreacion = fechacreacion;
 		this.fecharecibida = fecharecibida;
 		this.total = total;
+		
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -81,10 +85,28 @@ public class Orden {
 		this.total = total;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<DetalleOrden> getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(List<DetalleOrden> detalle) {
+		this.detalle = detalle;
+	}
+
 	@Override
 	public String toString() {
 		return "Orden [id=" + id + ", numero=" + numero + ", fechacreacion=" + fechacreacion + ", fecharecibida="
 				+ fecharecibida + ", total=" + total + "]";
 	}
+
+	
 
 }
