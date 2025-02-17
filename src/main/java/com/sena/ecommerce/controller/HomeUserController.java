@@ -124,7 +124,7 @@ public class HomeUserController {
 		return "usuario/carrito";
 	}
 
-	// metodo paara quitar productos del carrito
+	// metodo para quitar productos del carrito
 	@GetMapping("/delete/cart/{id}")
 	public String deleteproductoCart(@PathVariable Integer id, Model model,HttpSession session) {
 		// lista nueva de productos

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +19,8 @@ import com.sena.ecommerce.service.IOrdenService;
 import com.sena.ecommerce.service.IUsuarioService;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -54,7 +57,7 @@ public class UsuarioController {
 	@PostMapping("/acceder")
 	public String acceder(Usuario usuario, HttpSession session) {
 		LOGGER.info("Accesos: {}", usuario);
-		Optional<Usuario> userEmail = usuarioService.findById(usuario.getEmail());
+		Optional<Usuario> userEmail = usuarioService.findByEmail(usuario.getEmail());
 		LOGGER.info("usuario obtenido :{}", userEmail.get());
 		if (userEmail.isPresent()) {
 			session.setAttribute("idUsuario", userEmail.get().getId());
@@ -84,8 +87,18 @@ public class UsuarioController {
 		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
 		List<Orden> ordenes = ordenService.findByUsuario(usuario);
 		model.addAttribute("ordenes",ordenes);
-		model.addAttribute("session", session.getAttribute("idUsuario"));
+		model.addAttribute("sesion", session.getAttribute("idUsuario"));
 		return "usuario/compras";
+	}
+	//metodo compras
+	@GetMapping("/detalle/{id}")
+	public String detalleCompra(HttpSession session,Model model, @PathVariable Integer id) {
+		//esta es la sesion de usuario o idusuario
+		model.addAttribute("sesion", session.getAttribute("idUsuario"));
+		LOGGER.info("Id de la orden {}", id);
+		Optional<Orden> orden = ordenService.findById(id);
+		model.addAttribute("detalles",orden.get().getDetalle());
+		return "usuario/detallecompra";
 	}
 	
 	

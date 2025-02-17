@@ -92,6 +92,7 @@ public class DetalleOrden {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+	
 
 	@Override
 	public String toString() {
